@@ -86,7 +86,7 @@
     clearChildren(workWrap, ".gallery-grid");
 
     const items = Array.isArray(data?.gallery?.items) ? data.gallery.items : [];
-    const first = items.slice(0, 6);
+    const first = items.slice(0, 10);
 
     if (first.length) {
       const g = document.createElement("div");
