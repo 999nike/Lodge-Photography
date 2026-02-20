@@ -263,3 +263,20 @@ body {
 .pkg-card{
   backdrop-filter: blur(10px);
 }
+
+
+/* ===== MOBILE NAV FIX ===== */
+@media(max-width: 520px){
+  .nav{
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .nav-left, .nav-center, .nav-right{
+    flex: 1 1 100%;
+    text-align: center;
+  }
+  .nav-left a{
+    display: inline-block;
+  }
+}
