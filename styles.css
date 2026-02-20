@@ -232,4 +232,15 @@ body {
   border-radius: 10px;
   cursor: pointer;
 }
+
+.g-item{
+  border-radius: 14px;
+  overflow: hidden;
+  display: block;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
 .fname{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width: 160px; }
