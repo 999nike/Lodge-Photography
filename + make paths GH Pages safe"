@@ -1,0 +1,116 @@
+[1mdiff --git "a/+ wire gallery pics + cleanup\"" "b/+ wire gallery pics + cleanup\""[m
+[1mdeleted file mode 100644[m
+[1mindex e88836c..0000000[m
+[1m--- "a/+ wire gallery pics + cleanup\""[m	
+[1m+++ /dev/null[m
+[36m@@ -1,71 +0,0 @@[m
+[31m-[m
+[31m-                   SSUUMMMMAARRYY OOFF LLEESSSS CCOOMMMMAANNDDSS[m
+[31m-[m
+[31m-      Commands marked with * may be preceded by a number, _N.[m
+[31m-      Notes in parentheses indicate the behavior if _N is given.[m
+[31m-      A key preceded by a caret indicates the Ctrl key; thus ^K is ctrl-K.[m
+[31m-[m
+[31m-  h  H                 Display this help.[m
+[31m-  q  :q  Q  :Q  ZZ     Exit.[m
+[31m- ---------------------------------------------------------------------------[m
+[31m-[m
+[31m-                           MMOOVVIINNGG[m
+[31m-[m
+[31m-  e  ^E  j  ^N  CR  *  Forward  one line   (or _N lines).[m
+[31m-  y  ^Y  k  ^K  ^P  *  Backward one line   (or _N lines).[m
+[31m-  ESC-j             *  Forward  one file line (or _N file lines).[m
+[31m-  ESC-k             *  Backward one file line (or _N file lines).[m
+[31m-  f  ^F  ^V  SPACE  *  Forward  one window (or _N lines).[m
+[31m-  b  ^B  ESC-v      *  Backward one window (or _N lines).[m
+[31m-  z                 *  Forward  one window (and set window to _N).[m
+[31m-  w                 *  Backward one window (and set window to _N).[m
+[31m-  ESC-SPACE         *  Forward  one window, but don't stop at end-of-file.[m
+[31m-  ESC-b             *  Backward one window, but don't stop at beginning-of-file.[m
+[31m-  d  ^D             *  Forward  one half-window (and set half-window to _N).[m
+[31m-  u  ^U             *  Backward one half-window (and set half-window to _N).[m
+[31m-  ESC-)  RightArrow *  Right one half screen width (or _N positions).[m
+[31m-  ESC-(  LeftArrow  *  Left  one half screen width (or _N positions).[m
+[31m-  ESC-}  ^RightArrow   Right to last column displayed.[m
+[31m-  ESC-{  ^LeftArrow    Left  to first column.[m
+[31m-  F                    Forward forever; like "tail -f".[m
+[31m-  ESC-F                Like F but stop when search pattern is found.[m
+[31m-  r  ^R  ^L            Repaint screen.[m
+[31m-  R                    Repaint screen, discarding buffered input.[m
+[31m-        ---------------------------------------------------[m
+[31m-        Default "window" is the screen height.[m
+[31m-        Default "half-window" is half of the screen height.[m
+[31m- ---------------------------------------------------------------------------[m
+[31m-[m
+[31m-                          SSEEAARRCCHHIINNGG[m
+[31m-[m
+[31m-  /_p_a_t_t_e_r_n          *  Search forward for (_N-th) matching line.[m
+[31m-  ?_p_a_t_t_e_r_n          *  Search backward for (_N-th) matching line.[m
+[31m-  n                 *  Repeat previous search (for _N-th occurrence).[m
+[31m-  N                 *  Repeat previous search in reverse direction.[m
+[31m-  ESC-n             *  Repeat previous search, spanning files.[m
+[31m-  ESC-N             *  Repeat previous search, reverse dir. & spanning files.[m
+[31m-  ^O^N  ^On         *  Search forward for (_N-th) OSC8 hyperlink.[m
+[31m-  ^O^P  ^Op         *  Search backward for (_N-th) OSC8 hyperlink.[m
+[31m-  ^O^L  ^Ol            Jump to the currently selected OSC8 hyperlink.[m
+[31m-  ESC-u                Undo (toggle) search highlighting.[m
+[31m-  ESC-U                Clear search highlighting.[m
+[31m-  &_p_a_t_t_e_r_n          *  Display only matching lines.[m
+[31m-        ---------------------------------------------------[m
+[31m-		Search is case-sensitive unless changed with -i or -I.[m
+[31m-        A search pattern may begin with one or more of:[m
+[31m-        ^N or !  Search for NON-matching lines.[m
+[31m-        ^E or *  Search multiple files (pass thru END OF FILE).[m
+[31m-        ^F or @  Start search at FIRST file (for /) or last file (for ?).[m
+[31m-        ^K       Highlight matches, but don't move (KEEP position).[m
+[31m-        ^R       Don't use REGULAR EXPRESSIONS.[m
+[31m-        ^S _n     Search for match in _n-th parenthesized subpattern.[m
+[31m-        ^W       WRAP search if no match found.[m
+[31m-        ^L       Enter next character literally into pattern.[m
+[31m- ---------------------------------------------------------------------------[m
+[31m-[m
+[31m-                           JJUUMMPPIINNGG[m
+[31m-[m
+[31m-  g  <  ESC-<       *  Go to first line in file (or line _N).[m
+[31m-  G  >  ESC->       *  Go to last line in file (or line _N).[m
+[31m-  p  %              *  Go to beginning of file (or _N percent into file).[m
+[31m-  t                 *  Go to the (_N-th) next tag.[m
+[1mdiff --git a/admin.html b/admin.html[m
+[1mindex 22d484c..00739bb 100644[m
+[1m--- a/admin.html[m
+[1m+++ b/admin.html[m
+[36m@@ -10,7 +10,7 @@[m
+ [m
+ <header class="nav">[m
+   <div class="nav-left">[m
+[31m-    <a href="/index.html">← Back to site</a>[m
+[32m+[m[32m    <a href="index.html">← Back to site</a>[m
+   </div>[m
+   <div class="nav-center">LODGE • ADMIN</div>[m
+   <div class="nav-right"></div>[m
+[1mdiff --git a/data/content.json b/data/content.json[m
+[1mindex 4973085..15c6df3 100644[m
+[1m--- a/data/content.json[m
+[1m+++ b/data/content.json[m
+[36m@@ -6,7 +6,7 @@[m
+   "hero": {[m
+     "title": "Outdoor & Aerial Photography",[m
+     "subtitle": "Alpine ridges. River valleys. Drone follow shots.",[m
+[31m-    "bgImage": "/assets/background/pic1.jpg",[m
+[32m+[m[32m    "bgImage": "assets/background/pic1.jpg",[m
+     "ctaPrimary": {[m
+       "label": "View Work",[m
+       "href": "#work"[m
+[1mdiff --git a/js/admin.js b/js/admin.js[m
+[1mindex 6048cd8..838b184 100644[m
+[1m--- a/js/admin.js[m
+[1m+++ b/js/admin.js[m
+[36m@@ -106,7 +106,7 @@[m [m$export.addEventListener("click", async () => {[m
+ [m
+   // Build gallery list using repo paths[m
+   const items = draft.items.map((it) => ({[m
+[31m-    src: `/assets/gallery/${it.name}`,[m
+[32m+[m[32m    src: `assets/gallery/${it.name}`,[m
+     alt: it.alt || "Lodge photo"[m
+   }));[m
+ [m
