@@ -101,7 +101,7 @@ $clear.addEventListener("click", () => {
 
 $export.addEventListener("click", async () => {
   // Pull live content.json so we merge safely
-  const res = await fetch("/data/content.json", { cache: "no-store" });
+  const res = await fetch("data/content.json", { cache: "no-store" });
   const content = await res.json();
 
   // Build gallery list using repo paths

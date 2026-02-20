@@ -34,7 +34,7 @@
   // ---------- LOAD JSON ----------
   let data;
   try {
-    const res = await fetch("/data/content.json", { cache: "no-store" });
+    const res = await fetch("data/content.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`content.json fetch failed: ${res.status}`);
     data = await res.json();
   } catch (err) {
@@ -56,7 +56,7 @@
   setHref(".btn-secondary", data?.hero?.ctaSecondary?.href || "#packages");
 
   // ---------- BACKGROUND ----------
-  setBg(".bg-layer", data?.hero?.bgImage || "/assets/background/pic1.jpg");
+  setBg(".bg-layer", data?.hero?.bgImage || "assets/background/pic1.jpg");
 
   // ---------- PACKAGES ----------
   const pkgWrap = $("#packages .glass");

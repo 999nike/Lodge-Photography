@@ -1,0 +1,102 @@
+[1mdiff --git a/admin.html b/admin.html[m
+[1mindex fda552b..22d484c 100644[m
+[1m--- a/admin.html[m
+[1m+++ b/admin.html[m
+[36m@@ -45,7 +45,7 @@[m
+   </div>[m
+ </section>[m
+ [m
+[31m-<script src="/js/lightbox.js"></script>[m
+[31m-<script src="/js/admin.js"></script>[m
+[32m+[m[32m<script src="js/lightbox.js"></script>[m
+[32m+[m[32m<script src="js/admin.js"></script>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/assets/background/j.html b/assets/background/j.html[m
+[1mdeleted file mode 100644[m
+[1mindex ac49f51..0000000[m
+[1m--- a/assets/background/j.html[m
+[1m+++ /dev/null[m
+[36m@@ -1 +0,0 @@[m
+[31m-nn[m
+[1mdiff --git a/data/content.json b/data/content.json[m
+[1mindex f37777e..4973085 100644[m
+[1m--- a/data/content.json[m
+[1m+++ b/data/content.json[m
+[36m@@ -7,21 +7,79 @@[m
+     "title": "Outdoor & Aerial Photography",[m
+     "subtitle": "Alpine ridges. River valleys. Drone follow shots.",[m
+     "bgImage": "/assets/background/pic1.jpg",[m
+[31m-    "ctaPrimary": { "label": "View Work", "href": "#work" },[m
+[31m-    "ctaSecondary": { "label": "Packages", "href": "#packages" }[m
+[32m+[m[32m    "ctaPrimary": {[m
+[32m+[m[32m      "label": "View Work",[m
+[32m+[m[32m      "href": "#work"[m
+[32m+[m[32m    },[m
+[32m+[m[32m    "ctaSecondary": {[m
+[32m+[m[32m      "label": "Packages",[m
+[32m+[m[32m      "href": "#packages"[m
+[32m+[m[32m    }[m
+   },[m
+   "gallery": {[m
+     "items": [[m
+[31m-      { "src": "/assets/gallery/g1.jpg", "alt": "Alpine ridge" },[m
+[31m-      { "src": "/assets/gallery/g2.jpg", "alt": "Drone valley" },[m
+[31m-      { "src": "/assets/gallery/g3.jpg", "alt": "Sunset peak" },[m
+[31m-      { "src": "/assets/gallery/g4.jpg", "alt": "Ocean aerial" }[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic10.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic11.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic12.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic13.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic14.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic15.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic16.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic17.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic18.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic19.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "src": "assets/gallery/pic20.jpg",[m
+[32m+[m[32m        "alt": "Lodge photo"[m
+[32m+[m[32m      }[m
+     ][m
+   },[m
+   "packages": [[m
+[31m-    { "name": "Starter", "price": "£199", "detail": "25 edited photos • 72h turnaround" },[m
+[31m-    { "name": "Pro", "price": "£349", "detail": "50 edited photos • 48h turnaround" },[m
+[31m-    { "name": "Cinematic", "price": "£599", "detail": "Photo + drone highlights • priority delivery" }[m
+[32m+[m[32m    {[m
+[32m+[m[32m      "name": "Starter",[m
+[32m+[m[32m      "price": "\u00a3199",[m
+[32m+[m[32m      "detail": "25 edited photos \u2022 72h turnaround"[m
+[32m+[m[32m    

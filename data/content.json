@@ -7,21 +7,79 @@
     "title": "Outdoor & Aerial Photography",
     "subtitle": "Alpine ridges. River valleys. Drone follow shots.",
     "bgImage": "/assets/background/pic1.jpg",
-    "ctaPrimary": { "label": "View Work", "href": "#work" },
-    "ctaSecondary": { "label": "Packages", "href": "#packages" }
+    "ctaPrimary": {
+      "label": "View Work",
+      "href": "#work"
+    },
+    "ctaSecondary": {
+      "label": "Packages",
+      "href": "#packages"
+    }
   },
   "gallery": {
     "items": [
-      { "src": "/assets/gallery/g1.jpg", "alt": "Alpine ridge" },
-      { "src": "/assets/gallery/g2.jpg", "alt": "Drone valley" },
-      { "src": "/assets/gallery/g3.jpg", "alt": "Sunset peak" },
-      { "src": "/assets/gallery/g4.jpg", "alt": "Ocean aerial" }
+      {
+        "src": "assets/gallery/pic10.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic11.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic12.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic13.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic14.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic15.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic16.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic17.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic18.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic19.jpg",
+        "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic20.jpg",
+        "alt": "Lodge photo"
+      }
     ]
   },
   "packages": [
-    { "name": "Starter", "price": "£199", "detail": "25 edited photos • 72h turnaround" },
-    { "name": "Pro", "price": "£349", "detail": "50 edited photos • 48h turnaround" },
-    { "name": "Cinematic", "price": "£599", "detail": "Photo + drone highlights • priority delivery" }
+    {
+      "name": "Starter",
+      "price": "\u00a3199",
+      "detail": "25 edited photos \u2022 72h turnaround"
+    },
+    {
+      "name": "Pro",
+      "price": "\u00a3349",
+      "detail": "50 edited photos \u2022 48h turnaround"
+    },
+    {
+      "name": "Cinematic",
+      "price": "\u00a3599",
+      "detail": "Photo + drone highlights \u2022 priority delivery"
+    }
   ],
   "contact": {
     "instagram": "#",
