@@ -6,7 +6,7 @@
   "hero": {
     "title": "Outdoor & Aerial Photography",
     "subtitle": "Alpine ridges. River valleys. Drone follow shots.",
-    "bgImage": "/assets/background/pic1.jpg",
+    "bgImage": "assets/background/pic1.jpg",
     "ctaPrimary": {
       "label": "View Work",
       "href": "#work"
