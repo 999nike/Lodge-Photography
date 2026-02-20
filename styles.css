@@ -109,3 +109,45 @@ body {
   display: flex;
   justify-content: center;
 }
+/* ===== GALLERY GRID ===== */
+.gallery-grid{
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.g-item{
+  border-radius: 14px;
+  overflow: hidden;
+  display: block;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.g-item img{
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== PACKAGES ===== */
+.pkg-grid{
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.pkg-card{
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.pkg-name{ font-weight: 700; margin-bottom: 6px; }
+.pkg-price{ font-weight: 800; margin-bottom: 6px; }
+.pkg-detail{ font-size: 13px; opacity: 0.8; }
+
+@media(max-width: 900px){
+  .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+  .pkg-grid{ grid-template-columns: 1fr; }
+  .g-item img{ height: 190px; }
+}
