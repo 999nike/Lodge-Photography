@@ -280,3 +280,43 @@ body {
     display: inline-block;
   }
 }
+
+
+/* LODGE BRAND OVERRIDES */
+.nav-center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.brand-mark{
+  height:34px;
+  width:auto;
+  display:block;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.25));
+  opacity:.95;
+}
+
+.glass{ position: relative; overflow: hidden; }
+
+.hero-stamp{
+  position:absolute;
+  top:-14px;
+  right:-14px;
+  width:220px;
+  opacity:.18;
+  transform: rotate(-12deg);
+  pointer-events:none;
+  user-select:none;
+}
+
+.hero-stamp img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+@media (max-width: 640px){
+  .brand-mark{ height:28px; }
+  .hero-stamp{ width:180px; opacity:.16; }
+}
