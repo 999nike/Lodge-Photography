@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LODGE Admin</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <a href="/index.html">← Back to site</a>
+  </div>
+  <div class="nav-center">LODGE • ADMIN</div>
+  <div class="nav-right"></div>
+</header>
+
+<section class="section" style="padding-top:120px;">
+  <div class="glass">
+    <h2>Gallery Upload</h2>
+    <p>Drag photos into the box or click to choose. Click the bin to delete. Click a photo to preview fullscreen.</p>
+
+    <div id="drop" class="drop">
+      <input id="file" type="file" accept="image/*" multiple hidden />
+      <div class="drop-inner">
+        <div class="drop-title">Drop photos here</div>
+        <div class="drop-sub">or <button id="pick" class="btn-secondary" type="button">Choose files</button></div>
+        <div class="drop-hint">Tip: keep it to 10–20 best shots. Quality beats quantity.</div>
+      </div>
+    </div>
+
+    <div id="grid" class="admin-grid"></div>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+      <button id="save" class="btn-primary" type="button">Save Draft</button>
+      <button id="exportJson" class="btn-secondary" type="button">Download content.json</button>
+      <button id="clear" class="btn-secondary" type="button">Clear Draft</button>
+    </div>
+
+    <p style="margin-top:12px; opacity:.75; font-size:13px;">
+      GitHub Pages mode: you download <b>content.json</b>, then upload it to <b>/data/content.json</b>.
+      Images: upload your selected images into <b>/assets/gallery/</b> using the same filenames shown on each tile.
+    </p>
+  </div>
+</section>
+
+<script src="/js/lightbox.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
