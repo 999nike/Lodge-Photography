@@ -244,3 +244,22 @@ body {
 }
 
 .fname{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width: 160px; }
+
+
+/* ===== PREMIUM SECTION POLISH ===== */
+.glass h2{
+  letter-spacing: 0.4px;
+  margin-bottom: 10px;
+}
+.glass p{
+  line-height: 1.5;
+}
+.gallery-grid{
+  margin-top: 16px;
+}
+.pkg-grid{
+  margin-top: 16px;
+}
+.pkg-card{
+  backdrop-filter: blur(10px);
+}
