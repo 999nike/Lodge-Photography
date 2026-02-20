@@ -1,13 +1,25 @@
 const LS_KEY = "LODGE_DRAFT_GALLERY";
 
+// granny-proof caps
+const MAX_IMAGES = 20;        // change to 12 if you want
+const PIC_PREFIX = "pic";     // matches your repo naming
+const DEFAULT_START = 10;     // start at pic10.jpg if nothing exists yet
+
 let draft = {
-  items: [] // { name, src, alt }
+  items: [] // { name, preview, alt, file? }
 };
 
 // Load existing draft if present
 try {
   const saved = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-  if (saved && Array.isArray(saved.items)) draft = saved;
+  if (saved && Array.isArray(saved.items)) {
+    // restore only what we can safely persist
+    draft.items = saved.items.map(it => ({
+      name: it.name,
+      preview: it.preview || (it.src ? it.src : ""),
+      alt: it.alt || "Lodge photo"
+    })).filter(it => it.name && it.preview);
+  }
 } catch {}
 
 const $drop = document.getElementById("drop");
@@ -19,10 +31,29 @@ const $save = document.getElementById("save");
 const $export = document.getElementById("exportJson");
 const $clear = document.getElementById("clear");
 
-function slugName(i, originalName) {
+function baseName(path) {
+  return String(path || "").split("/").pop() || "";
+}
+
+function extractPicNumber(name) {
+  const m = String(name || "").match(new RegExp(`^${PIC_PREFIX}(\\d+)\\.`));
+  return m ? parseInt(m[1], 10) : null;
+}
+
+function nextPicName(usedNames, originalName) {
   const ext = (originalName.split(".").pop() || "jpg").toLowerCase();
-  const n = String(i + 1).padStart(2, "0");
-  return `g${n}.${ext}`;
+  // Find max existing picNN
+  let maxN = DEFAULT_START - 1;
+  usedNames.forEach(n => {
+    const num = extractPicNumber(n);
+    if (Number.isFinite(num)) maxN = Math.max(maxN, num);
+  });
+
+  // next available (in case gaps exist)
+  let candidate = maxN + 1;
+  while (usedNames.has(`${PIC_PREFIX}${candidate}.${ext}`)) candidate++;
+
+  return `${PIC_PREFIX}${candidate}.${ext}`;
 }
 
 function render() {
@@ -42,27 +73,27 @@ function render() {
 
 window.removeItem = function (idx) {
   draft.items.splice(idx, 1);
-  // re-number filenames
-  draft.items.forEach((it, i) => it.name = slugName(i, it.name));
+  // IMPORTANT: do NOT renumber filenames once files exist in repo.
   render();
 };
 
 function addFiles(files) {
-  const arr = Array.from(files || []).filter(f => f.type.startsWith("image/"));
+  const arr = Array.from(files || []).filter(f => f.type && f.type.startsWith("image/"));
   if (!arr.length) return;
 
-  // limit to 20 to keep it granny-proof
-  const spaceLeft = Math.max(0, 20 - draft.items.length);
+  const spaceLeft = Math.max(0, MAX_IMAGES - draft.items.length);
   const toAdd = arr.slice(0, spaceLeft);
 
+  const used = new Set(draft.items.map(it => it.name));
+
   toAdd.forEach((file) => {
-    const idx = draft.items.length;
-    const name = slugName(idx, file.name);
+    const name = nextPicName(used, file.name);
+    used.add(name);
 
     const preview = URL.createObjectURL(file);
     draft.items.push({
       name,
-      file,           // keep File in memory for export later if we add ZIP
+      file,           // kept only in-memory (static site can't write)
       preview,
       alt: "Lodge photo"
     });
@@ -87,7 +118,7 @@ $drop.addEventListener("drop", (e) => {
 
 $save.addEventListener("click", () => {
   localStorage.setItem(LS_KEY, JSON.stringify({
-    items: draft.items.map(({ name, alt }) => ({ name, alt }))
+    items: draft.items.map(({ name, preview, alt }) => ({ name, preview, alt }))
   }));
   alert("Draft saved (local). Next: Download content.json.");
 });
@@ -99,14 +130,39 @@ $clear.addEventListener("click", () => {
   render();
 });
 
+async function loadLiveGalleryIfEmpty() {
+  // If user already has a draft, keep it
+  if (draft.items.length) return;
+
+  try {
+    const res = await fetch("data/content.json", { cache: "no-store" });
+    const content = await res.json();
+    const live = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
+
+    draft.items = live.map(it => {
+      const src = it.src || "";
+      const name = baseName(src) || "unknown.jpg";
+      return {
+        name,
+        preview: src,                 // show real repo image
+        alt: it.alt || "Lodge photo"
+      };
+    }).filter(it => it.preview);
+
+  } catch (e) {
+    // silent fail: admin still works as draft-only
+    console.warn("Could not load live content.json", e);
+  }
+}
+
 $export.addEventListener("click", async () => {
   // Pull live content.json so we merge safely
   const res = await fetch("data/content.json", { cache: "no-store" });
   const content = await res.json();
 
-  // Build gallery list using repo paths
+  // Build gallery list using RELATIVE repo paths (NO leading slash)
   const items = draft.items.map((it) => ({
-    src: `/assets/gallery/${it.name}`,
+    src: `assets/gallery/${it.name}`,
     alt: it.alt || "Lodge photo"
   }));
 
@@ -120,4 +176,7 @@ $export.addEventListener("click", async () => {
   a.click();
 });
 
-render();
+(async function boot() {
+  await loadLiveGalleryIfEmpty();
+  render();
+})();
