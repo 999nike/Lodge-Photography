@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   try {
     if (req.method !== "POST") return res.status(405).json({ ok:false, error:"Method not allowed" });
 
-    const { pin, content } = req.body || {};
+    const { pin, content, images } = req.body || {};
     const ADMIN_PIN = process.env.ADMIN_PIN;
 
     if (!ADMIN_PIN) return res.status(500).json({ ok:false, error:"Server missing ADMIN_PIN" });
@@ -60,15 +60,43 @@ export default async function handler(req, res) {
     }
     const blobData = await blobResp.json();
 
-    // 3) Create new tree with updated content.json
+    // 3) Create blobs for images (base64) + build tree entries
+    const treeEntries = [
+      { path: "data/content.json", mode: "100644", type: "blob", sha: blobData.sha }
+    ];
+
+    const imgs = Array.isArray(images) ? images : [];
+
+    for (const img of imgs) {
+      const name = String(img?.name || "").trim();
+      const b64  = String(img?.b64  || "").trim();
+      if (!name || !b64) continue;
+
+      // lock path to assets/gallery only
+      const safeName = name.replace(/[^a-zA-Z0-9._-]/g, "");
+      const imgPath = `assets/gallery/${safeName}`;
+
+      const imgBlobResp = await fetch(`${api}/repos/${owner}/${repo}/git/blobs`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ content: b64, encoding: "base64" })
+      });
+      if (!imgBlobResp.ok) {
+        const t = await imgBlobResp.text();
+        return res.status(500).json({ ok:false, error:`Failed to create image blob (${safeName})`, detail:t });
+      }
+      const imgBlobData = await imgBlobResp.json();
+
+      treeEntries.push({ path: imgPath, mode: "100644", type: "blob", sha: imgBlobData.sha });
+    }
+
+    // 4) Create new tree with updated content.json + images
     const treeResp = await fetch(`${api}/repos/${owner}/${repo}/git/trees`, {
       method: "POST",
       headers,
       body: JSON.stringify({
         base_tree: baseTreeSha,
-        tree: [
-          { path: "data/content.json", mode: "100644", type: "blob", sha: blobData.sha }
-        ]
+        tree: treeEntries
       })
     });
     if (!treeResp.ok) {
