@@ -207,10 +207,43 @@ async function doPublish() {
     $publish.textContent = "Publishing...";
   }
 
+  // --- collect NEW images (only ones added this session have it.file) ---
+  async function fileToBase64(file) {
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error("File read failed"));
+      reader.onload = () => {
+        const s = String(reader.result || "");
+        // expected: data:image/webp;base64,AAAA...
+        const parts = s.split(",");
+        if (parts.length < 2) return reject(new Error("Bad base64 data URL"));
+        resolve(parts[1]); // strip "data:*;base64,"
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const newOnes = (draft.items || []).filter(it => it && it.file);
+  const images = [];
+
+  for (const it of newOnes) {
+    try {
+      const b64 = await fileToBase64(it.file);
+      images.push({
+        name: it.name,             // e.g. pic21.webp
+        b64,                       // base64 ONLY (no prefix)
+        alt: it.alt || "Lodge photo"
+      });
+    } catch (e) {
+      console.error(e);
+      return alert("Publish failed: couldn't read image " + (it.name || ""));
+    }
+  }
+
   const r = await fetch("/api/publish", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pin, content })
+    body: JSON.stringify({ pin, content, images })
   });
 
   const out = await r.json().catch(() => ({}));
