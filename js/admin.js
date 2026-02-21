@@ -1,7 +1,7 @@
 const LS_KEY = "LODGE_DRAFT_GALLERY";
 
 // granny-proof caps
-const MAX_IMAGES = 20;        // change to 12 if you want
+const MAX_IMAGES = 100;        // change to 12 if you want
 const PIC_PREFIX = "pic";     // matches your repo naming
 const DEFAULT_START = 10;     // start at pic10.jpg if nothing exists yet
 
