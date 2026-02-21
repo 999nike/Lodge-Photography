@@ -5,14 +5,14 @@
   },
   "hero": {
     "title": "Outdoor & Aerial Photography",
-    "subtitle": "Alpine ridges. River valleys. Drone follow shots.",
+    "subtitle": "Professional drone and landscape photography for property and outdoor brands.",
     "bgImage": "assets/background/pic1.jpg",
     "ctaPrimary": {
-      "label": "View Work",
+      "label": "View Portfolio",
       "href": "#work"
     },
     "ctaSecondary": {
-      "label": "Packages",
+      "label": "Packages & Pricing",
       "href": "#packages"
     }
   },

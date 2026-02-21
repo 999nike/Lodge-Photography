@@ -299,16 +299,31 @@ body {
 
 .glass{ position: relative; overflow: hidden; }
 
+.hero-card, .hero-glass {
+  position: relative;
+  overflow: hidden;
+}
+
 .hero-stamp{
   position:absolute;
-  top:-14px;
-  right:-14px;
-  width:220px;
-  opacity:.18;
-  transform: rotate(-12deg);
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0.14;
   pointer-events:none;
-  user-select:none;
+  z-index:0;
 }
+
+.hero-stamp img{
+  height:72%;
+  width:auto;
+  object-fit:contain;
+  transform:none;
+}
+
+
+
 
 .hero-stamp img{
   width:100%;
@@ -319,4 +334,100 @@ body {
 @media (max-width: 640px){
   .brand-mark{ height:28px; }
   .hero-stamp{ width:180px; opacity:.16; }
+}
+
+
+/* ===== HERO STAMP OVERRIDE (fills card, no angle) ===== */
+.hero-card, .hero-box, .hero-glass, .glass, .hero-inner { position: relative; overflow: hidden; }
+
+/* If your stamp/logo has a class already (hero-stamp / brand-stamp), this will catch it */
+.hero-stamp, .brand-stamp, img.hero-stamp, img.brand-stamp {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transform: none !important;
+  opacity: .18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keep the text/buttons above the stamp */
+.hero-card > *, .hero-box > *, .hero-glass > *, .glass > *, .hero-inner > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ===== HERO CARD POSITION TWEAK ===== */
+.hero, .hero-wrap, .hero-section {
+  /* keep background visible, bring content up a bit */
+}
+.hero-card, .hero-box, .hero-glass, .glass, .hero-inner {
+  transform: translateY(-40px);
+}
+@media (max-width: 640px){
+  .hero-card, .hero-box, .hero-glass, .glass, .hero-inner {
+    transform: translateY(-20px);
+  }
+}
+
+
+/* ===== NAV ADMIN BUTTON ===== */
+.nav-admin{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:32px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.18);
+  background:rgba(255,255,255,.55);
+  color:#111;
+  text-decoration:none;
+  font-size:18px;
+  line-height:1;
+  backdrop-filter: blur(10px);
+}
+.nav-admin:active{ transform: translateY(1px); }
+
+
+/* ===== HERO CARD SHAPE FIX ===== */
+.hero-card, .hero-box, .hero-glass, .glass, .hero-inner {
+  width: min(90%, 900px);
+  min-height: 260px;
+  padding: 60px 40px;
+  border-radius: 28px;
+}
+
+/* Logo centered but NOT stretching card */
+.hero-stamp{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0.16;
+  pointer-events:none;
+  z-index:0;
+}
+
+.hero-stamp img{
+  max-height:95%;
+  max-width:95%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  transform:none;
+}
+
+
+/* --- HERO STAMP OVERRIDE (AUTO) --- */
+.hero-stamp img{
+  max-width: none !important;
+  max-height: none !important;
+  width: 120% !important;   /* grow outward */
+  height: auto !important;
+  transform: none !important; /* avoid fighting old rules */
 }
