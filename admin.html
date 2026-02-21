@@ -33,6 +33,10 @@
     <div id="grid" class="admin-grid"></div>
 
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+      <input id="pin" inputmode="numeric" pattern="[0-9]*" placeholder="Admin PIN"
+        style="padding:12px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.25); color:#fff; min-width:180px;">
+      <button id="publish" class="btn-primary" type="button">Publish</button>
+
       <button id="save" class="btn-primary" type="button">Save Draft</button>
       <button id="exportJson" class="btn-secondary" type="button">Download content.json</button>
       <button id="clear" class="btn-secondary" type="button">Clear Draft</button>

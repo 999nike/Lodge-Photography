@@ -30,6 +30,9 @@ const $grid = document.getElementById("grid");
 const $save = document.getElementById("save");
 const $export = document.getElementById("exportJson");
 const $clear = document.getElementById("clear");
+const $pin = document.getElementById("pin");
+const $publish = document.getElementById("publish");
+
 
 function baseName(path) {
   return String(path || "").split("/").pop() || "";
@@ -180,3 +183,59 @@ $export.addEventListener("click", async () => {
   await loadLiveGalleryIfEmpty();
   render();
 })();
+
+
+async function doPublish() {
+  const pin = ($pin && $pin.value || "").trim();
+  if (!pin) return alert("Enter Admin PIN");
+
+  // Pull live content.json so we merge safely
+  const res = await fetch("data/content.json", { cache: "no-store" });
+  const content = await res.json();
+
+  // Build gallery list using repo paths (relative)
+  const items = (draft.items || []).map((it) => ({
+    src: `assets/gallery/${it.name}`,
+    alt: it.alt || "Lodge photo"
+  }));
+
+  content.gallery = content.gallery || {};
+  content.gallery.items = items;
+
+  if ($publish) {
+    $publish.disabled = true;
+    $publish.textContent = "Publishing...";
+  }
+
+  const r = await fetch("/api/publish", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pin, content })
+  });
+
+  const out = await r.json().catch(() => ({}));
+
+  if ($publish) {
+    $publish.disabled = false;
+    $publish.textContent = "Publish";
+  }
+
+  if (!r.ok || !out.ok) {
+    console.log(out);
+    return alert("Publish failed: " + (out.error || r.status));
+  }
+
+  alert("Published ✅\nCommit: " + out.commit + "\nVercel will deploy automatically.");
+}
+
+if (typeof window !== "undefined" && $publish) {
+  $publish.addEventListener("click", () => {
+    doPublish().catch(err => {
+      console.error(err);
+      alert("Publish error: " + (err.message || err));
+      $publish.disabled = false;
+      $publish.textContent = "Publish";
+    });
+  });
+}
+
