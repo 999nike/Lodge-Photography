@@ -177,6 +177,13 @@ async function loadLiveGalleryIfEmpty() {
     const res = await fetch("data/content.json", { cache: "no-store" });
     const content = await res.json();
 
+  // allow admin modules to override merged content (e.g., packages editor)
+  if (window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__) {
+    try { Object.assign(content, window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__); } catch {}
+    window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__ = null;
+  }
+
+
     // ---- HERO: populate editor fields from live content.json ----
     try {
       if ($heroTitle)    $heroTitle.value    = content?.hero?.title || "";
@@ -217,6 +224,13 @@ $export.addEventListener("click", async () => {
   // Pull live content.json so we merge safely
   const res = await fetch("data/content.json", { cache: "no-store" });
   const content = await res.json();
+
+  // allow admin modules to override merged content (e.g., packages editor)
+  if (window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__) {
+    try { Object.assign(content, window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__); } catch {}
+    window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__ = null;
+  }
+
 
     // ---- HERO: populate editor fields from live content.json ----
     try {
@@ -281,6 +295,13 @@ async function doPublish() {
   // Pull live content.json so we merge safely
   const res = await fetch("data/content.json", { cache: "no-store" });
   const content = await res.json();
+
+  // allow admin modules to override merged content (e.g., packages editor)
+  if (window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__) {
+    try { Object.assign(content, window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__); } catch {}
+    window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__ = null;
+  }
+
 
     // ---- HERO: populate editor fields from live content.json ----
     try {
@@ -515,5 +536,255 @@ if (typeof window !== "undefined" && $publish) {
 
   } catch (e) {
     console.warn("Hero live preview module failed", e);
+  }
+})();
+
+
+// ===================================================
+// PACKAGES EDITOR MODULE
+// - add/remove + move up/down
+// - features (one per line), badge, featured
+// - live preview grid in admin
+// - publish writes to content.packages
+// ===================================================
+(function initPackagesEditor(){
+  try {
+    const $list = document.getElementById("pkgList");
+    const $add = document.getElementById("pkgAdd");
+    const $toggle = document.getElementById("pkgPreviewToggle");
+    const $previewWrap = document.getElementById("pkgPreview");
+    const $previewGrid = document.getElementById("pkgPreviewGrid");
+
+    if (!$list || !$add) return; // admin.html block missing -> skip
+
+    let pkgsDraft = [];
+
+    function safeStr(x){ return (x == null) ? "" : String(x); }
+
+    function readFeatures(text){
+      return safeStr(text)
+        .split("\n")
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    function renderPreview(){
+      if (!$previewGrid) return;
+      $previewGrid.innerHTML = pkgsDraft.map((p) => {
+        const featured = !!p.featured;
+        const badge = safeStr(p.badge).trim();
+        const feats = Array.isArray(p.features) ? p.features : [];
+        return `
+          <div class="pkg-card ${featured ? "pkg-featured" : ""}">
+            ${badge ? `<div class="pkg-badge">${badge}</div>` : ``}
+            <div class="pkg-name">${safeStr(p.name)}</div>
+            <div class="pkg-price">${safeStr(p.price)}</div>
+            <div class="pkg-detail">${safeStr(p.detail)}</div>
+            ${feats.length ? `<ul class="pkg-feats">${feats.map(f=>`<li>${safeStr(f)}</li>`).join("")}</ul>` : ``}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderList(){
+      $list.innerHTML = pkgsDraft.map((p, i) => {
+        return `
+          <div class="glass" style="padding:12px; border-radius:16px;">
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+              <div style="font-weight:800;">Package ${i+1}</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn-secondary" data-act="up" data-i="${i}">↑</button>
+                <button type="button" class="btn-secondary" data-act="down" data-i="${i}">↓</button>
+                <button type="button" class="btn-secondary" data-act="del" data-i="${i}">Delete</button>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+              <div>
+                <div style="font-size:12px; opacity:.8; margin-bottom:6px;">Name</div>
+                <input data-k="name" data-i="${i}" value="${safeStr(p.name).replace(/"/g,"&quot;")}"
+                  style="width:100%; padding:12px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:rgba(0,0,0,.08);">
+              </div>
+              <div>
+                <div style="font-size:12px; opacity:.8; margin-bottom:6px;">Price</div>
+                <input data-k="price" data-i="${i}" value="${safeStr(p.price).replace(/"/g,"&quot;")}"
+                  style="width:100%; padding:12px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:rgba(0,0,0,.08);">
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+              <div>
+                <div style="font-size:12px; opacity:.8; margin-bottom:6px;">Detail</div>
+                <input data-k="detail" data-i="${i}" value="${safeStr(p.detail).replace(/"/g,"&quot;")}"
+                  style="width:100%; padding:12px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:rgba(0,0,0,.08);">
+              </div>
+              <div>
+                <div style="font-size:12px; opacity:.8; margin-bottom:6px;">Badge (optional)</div>
+                <input data-k="badge" data-i="${i}" value="${safeStr(p.badge).replace(/"/g,"&quot;")}"
+                  style="width:100%; padding:12px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:rgba(0,0,0,.08);">
+              </div>
+            </div>
+
+            <div style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+              <label style="display:flex; align-items:center; gap:8px; user-select:none;">
+                <input type="checkbox" data-k="featured" data-i="${i}" ${p.featured ? "checked" : ""}>
+                <span style="font-weight:700;">Featured</span>
+              </label>
+            </div>
+
+            <div style="margin-top:10px;">
+              <div style="font-size:12px; opacity:.8; margin-bottom:6px;">Features (one per line)</div>
+              <textarea data-k="features" data-i="${i}"
+                style="width:100%; min-height:90px; padding:12px 14px; border-radius:16px; border:1px solid rgba(255,255,255,.15); background:rgba(0,0,0,.08);"
+              >${(Array.isArray(p.features)?p.features:[]).join("\n")}</textarea>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      renderPreview();
+    }
+
+    function addPkg(){
+      pkgsDraft.push({
+        name: "New Package",
+        price: "£0",
+        detail: "",
+        features: [],
+        badge: "",
+        featured: false
+      });
+      renderList();
+    }
+
+    function move(i, dir){
+      const j = i + dir;
+      if (j < 0 || j >= pkgsDraft.length) return;
+      const tmp = pkgsDraft[i];
+      pkgsDraft[i] = pkgsDraft[j];
+      pkgsDraft[j] = tmp;
+      renderList();
+    }
+
+    function del(i){
+      pkgsDraft.splice(i, 1);
+      renderList();
+    }
+
+    // delegate clicks
+    $list.addEventListener("click", (e) => {
+      const b = e.target && e.target.closest && e.target.closest("button[data-act]");
+      if (!b) return;
+      const act = b.getAttribute("data-act");
+      const i = parseInt(b.getAttribute("data-i"), 10);
+      if (!Number.isFinite(i)) return;
+      if (act === "up") return move(i, -1);
+      if (act === "down") return move(i, +1);
+      if (act === "del") return del(i);
+    });
+
+    // delegate inputs
+    $list.addEventListener("input", (e) => {
+      const el = e.target;
+      if (!el || !el.getAttribute) return;
+      const k = el.getAttribute("data-k");
+      const i = parseInt(el.getAttribute("data-i"), 10);
+      if (!k || !Number.isFinite(i) || !pkgsDraft[i]) return;
+
+      if (k === "featured") {
+        pkgsDraft[i].featured = !!el.checked;
+      } else if (k === "features") {
+        pkgsDraft[i].features = readFeatures(el.value);
+      } else {
+        pkgsDraft[i][k] = el.value;
+      }
+      renderPreview();
+    });
+
+    $add.addEventListener("click", addPkg);
+
+    if ($toggle && $previewWrap) {
+      $toggle.addEventListener("click", () => {
+        const on = $previewWrap.style.display !== "none";
+        $previewWrap.style.display = on ? "none" : "block";
+        if (!on) renderPreview();
+      });
+    }
+
+    // Load live packages from content.json
+    fetch("data/content.json", { cache: "no-store" })
+      .then(r => r.json())
+      .then(content => {
+        const live = Array.isArray(content?.packages) ? content.packages : [];
+        pkgsDraft = live.map(p => ({
+          name: safeStr(p?.name),
+          price: safeStr(p?.price),
+          detail: safeStr(p?.detail),
+          features: Array.isArray(p?.features) ? p.features.map(safeStr) : [],
+          badge: safeStr(p?.badge),
+          featured: !!p?.featured
+        }));
+        renderList();
+      })
+      .catch(() => {
+        pkgsDraft = [];
+        renderList();
+      });
+
+    // Hook into existing doPublish by wrapping it:
+    const _oldDoPublish = (typeof doPublish === "function") ? doPublish : null;
+
+    window.doPublish = async function wrappedDoPublish(){
+      // Pull live content.json so we merge safely (same as original)
+      const pin = (window.document.getElementById("pin")?.value || "").trim();
+      if (!pin) return alert("Enter Admin PIN");
+
+      const res = await fetch("data/content.json", { cache: "no-store" });
+      const content = await res.json();
+
+  // allow admin modules to override merged content (e.g., packages editor)
+  if (window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__) {
+    try { Object.assign(content, window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__); } catch {}
+    window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__ = null;
+  }
+
+
+      // gallery comes from existing code path (draft.items), so we DON'T touch it here.
+      // packages: overwrite from editor
+      content.packages = pkgsDraft.map(p => ({
+        name: safeStr(p.name),
+        price: safeStr(p.price),
+        detail: safeStr(p.detail),
+        features: Array.isArray(p.features) ? p.features.map(safeStr) : [],
+        badge: safeStr(p.badge),
+        featured: !!p.featured
+      }));
+
+      // Now call the existing publish pipeline by triggering the same request shape it expects.
+      // We re-use the publish button state logic from the original by calling its internal flow if present.
+      // If original exists, it will rebuild gallery & images payload. We'll just pass our content.
+      // Fallback: direct POST to /api/publish with {pin, content} (images handled if original already patched).
+      try {
+        // Try to reuse original if it exists and uses current global draft
+        if (_oldDoPublish && _oldDoPublish !== window.doPublish) {
+          // temporarily stash a helper for original to pick up our content
+          window.__WIZZ_PACKAGES_CONTENT_OVERRIDE__ = content;
+          return await _oldDoPublish();
+        }
+      } catch {}
+
+      // Fallback direct call (works if your /api/publish handles images optionally)
+      const r = await fetch("/api/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pin, content })
+      });
+      const out = await r.json().catch(() => ({}));
+      if (!r.ok || !out.ok) return alert("Publish failed: " + (out.error || r.status));
+      alert("Published ✅\nCommit: " + out.commit + "\nVercel will deploy automatically.");
+    };
+
+  } catch (e) {
+    console.warn("Packages editor failed", e);
   }
 })();

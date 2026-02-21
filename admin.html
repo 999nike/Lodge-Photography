@@ -149,6 +149,28 @@
       Images: upload your selected images into <b>/assets/gallery/</b> using the same filenames shown on each tile.
     </p>
   </div>
+
+  <div class="glass" style="margin-top:18px;">
+    <h2>Packages Editor</h2>
+    <p>Add/remove packages, reorder, and edit features. Publish commits it into <b>data/content.json</b>.</p>
+
+    <div id="pkgList" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
+      <button id="pkgAdd" class="btn-primary" type="button">+ Add Package</button>
+      <button id="pkgPreviewToggle" class="btn-secondary" type="button">Toggle Preview</button>
+    </div>
+
+    <div id="pkgPreview" style="margin-top:14px; display:none;">
+      <div style="font-weight:700; margin-bottom:10px;">Live Preview</div>
+      <div id="pkgPreviewGrid" class="pkg-grid"></div>
+    </div>
+
+    <p style="margin-top:12px; opacity:.75; font-size:13px;">
+      Tip: put one feature per line. “Featured” highlights the card. “Badge” shows a small label.
+    </p>
+  </div>
+
 </section>
 
 <script src="js/lightbox.js"></script>

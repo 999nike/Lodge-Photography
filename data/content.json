@@ -63,7 +63,11 @@
         "alt": "Lodge photo"
       },
       {
+<<<<<<< HEAD
         "src": "assets/gallery/pic21.png",
+=======
+        "src": "assets/gallery/pic21.jpg",
+>>>>>>> d6ddb1e (fix: hero admin + pic21 path)
         "alt": "Lodge photo"
       }
     ]
@@ -71,18 +75,18 @@
   "packages": [
     {
       "name": "Starter",
-      "price": "£199",
-      "detail": "25 edited photos • 72h turnaround"
+      "price": "\u00a3199",
+      "detail": "25 edited photos \u2022 72h turnaround"
     },
     {
       "name": "Pro",
-      "price": "£349",
-      "detail": "50 edited photos • 48h turnaround"
+      "price": "\u00a3349",
+      "detail": "50 edited photos \u2022 48h turnaround"
     },
     {
       "name": "Cinematic",
-      "price": "£599",
-      "detail": "Photo + drone highlights • priority delivery"
+      "price": "\u00a3599",
+      "detail": "Photo + drone highlights \u2022 priority delivery"
     }
   ],
   "contact": {
