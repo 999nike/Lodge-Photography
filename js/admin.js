@@ -415,3 +415,105 @@ if (typeof window !== "undefined" && $publish) {
   });
 }
 
+
+
+// ===================================================
+// HERO LIVE PREVIEW MODULE (append-only, robust)
+// - Updates preview as you type (title/subtitle/buttons)
+// - Shows chosen hero background instantly (local objectURL)
+// - Falls back to content.json hero.bgImage if no new bg selected
+// ===================================================
+(function initHeroLivePreview() {
+  try {
+    const $t = document.getElementById("heroTitle");
+    const $s = document.getElementById("heroSubtitle");
+    const $l1 = document.getElementById("cta1Label");
+    const $h1 = document.getElementById("cta1Href");
+    const $l2 = document.getElementById("cta2Label");
+    const $h2 = document.getElementById("cta2Href");
+
+    const $bgFile = document.getElementById("heroBgFile");
+
+    const $bg = document.getElementById("heroPreviewBg");
+    const $pt = document.getElementById("heroPreviewTitle");
+    const $ps = document.getElementById("heroPreviewSubtitle");
+    const $b1 = document.getElementById("heroPreviewBtn1");
+    const $b2 = document.getElementById("heroPreviewBtn2");
+
+    if (!$bg || !$pt || !$ps || !$b1 || !$b2) {
+      // preview panel not present — silently skip
+      return;
+    }
+
+    let heroBgPreviewUrl = "";
+
+    function state() {
+      return {
+        title: ($t && $t.value || "").trim() || "Hero title",
+        subtitle: ($s && $s.value || "").trim() || "Hero subtitle",
+        cta1Label: ($l1 && $l1.value || "").trim() || "View Portfolio",
+        cta1Href: ($h1 && $h1.value || "").trim() || "#work",
+        cta2Label: ($l2 && $l2.value || "").trim() || "Packages & Pricing",
+        cta2Href: ($h2 && $h2.value || "").trim() || "#packages",
+      };
+    }
+
+    function paint() {
+      const st = state();
+      $pt.textContent = st.title;
+      $ps.textContent = st.subtitle;
+
+      $b1.textContent = st.cta1Label;
+      $b1.setAttribute("href", st.cta1Href);
+
+      $b2.textContent = st.cta2Label;
+      $b2.setAttribute("href", st.cta2Href);
+    }
+
+    function setBg(url) {
+      try {
+        $bg.style.backgroundImage = url ? `url("${url}")` : "";
+      } catch {}
+    }
+
+    // Bind typing -> preview
+    [$t, $s, $l1, $h1, $l2, $h2].forEach((el) => {
+      if (!el) return;
+      el.addEventListener("input", paint);
+    });
+
+    // Bind hero bg selection -> preview (local)
+    if ($bgFile) {
+      $bgFile.addEventListener("change", (e) => {
+        const f = (e.target.files && e.target.files[0]) ? e.target.files[0] : null;
+        if (!f) return;
+
+        try {
+          if (heroBgPreviewUrl) URL.revokeObjectURL(heroBgPreviewUrl);
+          heroBgPreviewUrl = URL.createObjectURL(f);
+          setBg(heroBgPreviewUrl);
+        } catch (err) {
+          console.warn("hero bg preview failed", err);
+        }
+      });
+    }
+
+    // Initial render from current inputs
+    paint();
+
+    // Background fallback from live content.json (if user hasn't picked a new bg this session)
+    fetch("data/content.json", { cache: "no-store" })
+      .then(r => r.json())
+      .then(content => {
+        if (heroBgPreviewUrl) return; // user picked a new bg, keep that
+        const bg = content?.hero?.bgImage || "assets/background/pic1.jpg";
+        setBg(bg);
+      })
+      .catch(() => {
+        if (!heroBgPreviewUrl) setBg("assets/background/pic1.jpg");
+      });
+
+  } catch (e) {
+    console.warn("Hero live preview module failed", e);
+  }
+})();
