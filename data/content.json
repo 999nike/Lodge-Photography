@@ -6,7 +6,7 @@
   "hero": {
     "title": "Outdoor & Aerial Photography",
     "subtitle": "Professional drone and landscape photography for property and outdoor brands.",
-    "bgImage": "assets/background/pic1.jpg",
+    "bgImage": "assets/background/hero_bg.jpg",
     "ctaPrimary": {
       "label": "View Portfolio",
       "href": "#work"
@@ -63,7 +63,7 @@
         "alt": "Lodge photo"
       },
       {
-        "src": "assets/gallery/pic21.webp",
+        "src": "assets/gallery/pic21.png",
         "alt": "Lodge photo"
       }
     ]
