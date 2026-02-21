@@ -33,6 +33,19 @@ const $clear = document.getElementById("clear");
 const $pin = document.getElementById("pin");
 const $publish = document.getElementById("publish");
 
+const $heroTitle = document.getElementById("heroTitle");
+const $heroSubtitle = document.getElementById("heroSubtitle");
+const $cta1Label = document.getElementById("cta1Label");
+const $cta1Href = document.getElementById("cta1Href");
+const $cta2Label = document.getElementById("cta2Label");
+const $cta2Href = document.getElementById("cta2Href");
+
+const $heroBgFile = document.getElementById("heroBgFile");
+const $heroBgPick = document.getElementById("heroBgPick");
+const $heroBgStatus = document.getElementById("heroBgStatus");
+
+let heroBgUpload = null; // { name, file }
+
 
 function baseName(path) {
   return String(path || "").split("/").pop() || "";
@@ -119,6 +132,29 @@ $drop.addEventListener("drop", (e) => {
   addFiles(e.dataTransfer.files);
 });
 
+// ---------------------------
+// HERO BG PICKER
+// ---------------------------
+function pickHeroBgName(originalName) {
+  const ext = (String(originalName || "").split(".").pop() || "webp").toLowerCase();
+  // lock to a stable filename so the site always points to one background asset
+  return `hero_bg.${ext}`;
+}
+
+if ($heroBgPick && $heroBgFile) {
+  $heroBgPick.addEventListener("click", () => $heroBgFile.click());
+  $heroBgFile.addEventListener("change", (e) => {
+    const f = (e.target.files && e.target.files[0]) ? e.target.files[0] : null;
+    if (!f) return;
+
+    const name = pickHeroBgName(f.name);
+    heroBgUpload = { name, file: f };
+
+    if ($heroBgStatus) $heroBgStatus.textContent = `Selected: ${name}`;
+  });
+}
+
+
 $save.addEventListener("click", () => {
   localStorage.setItem(LS_KEY, JSON.stringify({
     items: draft.items.map(({ name, preview, alt }) => ({ name, preview, alt }))
@@ -140,6 +176,25 @@ async function loadLiveGalleryIfEmpty() {
   try {
     const res = await fetch("data/content.json", { cache: "no-store" });
     const content = await res.json();
+
+    // ---- HERO: populate editor fields from live content.json ----
+    try {
+      if ($heroTitle)    $heroTitle.value    = content?.hero?.title || "";
+      if ($heroSubtitle) $heroSubtitle.value = content?.hero?.subtitle || "";
+
+      if ($cta1Label) $cta1Label.value = content?.hero?.ctaPrimary?.label || "";
+      if ($cta1Href)  $cta1Href.value  = content?.hero?.ctaPrimary?.href  || "";
+
+      if ($cta2Label) $cta2Label.value = content?.hero?.ctaSecondary?.label || "";
+      if ($cta2Href)  $cta2Href.value  = content?.hero?.ctaSecondary?.href  || "";
+
+      if ($heroBgStatus) {
+        const bg = content?.hero?.bgImage || "";
+        $heroBgStatus.textContent = bg ? `Current: ${bg}` : "No hero background set";
+      }
+    } catch (e) {
+      console.warn("Hero editor populate failed", e);
+    }
     const live = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
 
     draft.items = live.map(it => {
@@ -163,6 +218,25 @@ $export.addEventListener("click", async () => {
   const res = await fetch("data/content.json", { cache: "no-store" });
   const content = await res.json();
 
+    // ---- HERO: populate editor fields from live content.json ----
+    try {
+      if ($heroTitle)    $heroTitle.value    = content?.hero?.title || "";
+      if ($heroSubtitle) $heroSubtitle.value = content?.hero?.subtitle || "";
+
+      if ($cta1Label) $cta1Label.value = content?.hero?.ctaPrimary?.label || "";
+      if ($cta1Href)  $cta1Href.value  = content?.hero?.ctaPrimary?.href  || "";
+
+      if ($cta2Label) $cta2Label.value = content?.hero?.ctaSecondary?.label || "";
+      if ($cta2Href)  $cta2Href.value  = content?.hero?.ctaSecondary?.href  || "";
+
+      if ($heroBgStatus) {
+        const bg = content?.hero?.bgImage || "";
+        $heroBgStatus.textContent = bg ? `Current: ${bg}` : "No hero background set";
+      }
+    } catch (e) {
+      console.warn("Hero editor populate failed", e);
+    }
+
   // Build gallery list using RELATIVE repo paths (NO leading slash)
   const items = draft.items.map((it) => ({
     src: `assets/gallery/${it.name}`,
@@ -171,6 +245,21 @@ $export.addEventListener("click", async () => {
 
   content.gallery = content.gallery || {};
   content.gallery.items = items;
+
+
+  // ---- HERO: merge fields from editor into content.json ----
+  content.hero = content.hero || {};
+
+  if ($heroTitle)    content.hero.title    = ($heroTitle.value || "").trim();
+  if ($heroSubtitle) content.hero.subtitle = ($heroSubtitle.value || "").trim();
+
+  content.hero.ctaPrimary = content.hero.ctaPrimary || {};
+  if ($cta1Label) content.hero.ctaPrimary.label = ($cta1Label.value || "").trim();
+  if ($cta1Href)  content.hero.ctaPrimary.href  = ($cta1Href.value || "").trim() || "#work";
+
+  content.hero.ctaSecondary = content.hero.ctaSecondary || {};
+  if ($cta2Label) content.hero.ctaSecondary.label = ($cta2Label.value || "").trim();
+  if ($cta2Href)  content.hero.ctaSecondary.href  = ($cta2Href.value || "").trim() || "#packages";
 
   const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
@@ -193,6 +282,25 @@ async function doPublish() {
   const res = await fetch("data/content.json", { cache: "no-store" });
   const content = await res.json();
 
+    // ---- HERO: populate editor fields from live content.json ----
+    try {
+      if ($heroTitle)    $heroTitle.value    = content?.hero?.title || "";
+      if ($heroSubtitle) $heroSubtitle.value = content?.hero?.subtitle || "";
+
+      if ($cta1Label) $cta1Label.value = content?.hero?.ctaPrimary?.label || "";
+      if ($cta1Href)  $cta1Href.value  = content?.hero?.ctaPrimary?.href  || "";
+
+      if ($cta2Label) $cta2Label.value = content?.hero?.ctaSecondary?.label || "";
+      if ($cta2Href)  $cta2Href.value  = content?.hero?.ctaSecondary?.href  || "";
+
+      if ($heroBgStatus) {
+        const bg = content?.hero?.bgImage || "";
+        $heroBgStatus.textContent = bg ? `Current: ${bg}` : "No hero background set";
+      }
+    } catch (e) {
+      console.warn("Hero editor populate failed", e);
+    }
+
   // Build gallery list using repo paths (relative)
   const items = (draft.items || []).map((it) => ({
     src: `assets/gallery/${it.name}`,
@@ -201,6 +309,21 @@ async function doPublish() {
 
   content.gallery = content.gallery || {};
   content.gallery.items = items;
+
+
+  // ---- HERO: merge fields from editor into content.json ----
+  content.hero = content.hero || {};
+
+  if ($heroTitle)    content.hero.title    = ($heroTitle.value || "").trim();
+  if ($heroSubtitle) content.hero.subtitle = ($heroSubtitle.value || "").trim();
+
+  content.hero.ctaPrimary = content.hero.ctaPrimary || {};
+  if ($cta1Label) content.hero.ctaPrimary.label = ($cta1Label.value || "").trim();
+  if ($cta1Href)  content.hero.ctaPrimary.href  = ($cta1Href.value || "").trim() || "#work";
+
+  content.hero.ctaSecondary = content.hero.ctaSecondary || {};
+  if ($cta2Label) content.hero.ctaSecondary.label = ($cta2Label.value || "").trim();
+  if ($cta2Href)  content.hero.ctaSecondary.href  = ($cta2Href.value || "").trim() || "#packages";
 
   if ($publish) {
     $publish.disabled = true;
@@ -225,6 +348,26 @@ async function doPublish() {
 
   const newOnes = (draft.items || []).filter(it => it && it.file);
   const images = [];
+
+
+    // include hero background upload (if selected)
+    if (heroBgUpload && heroBgUpload.file) {
+      try {
+        const b64 = await fileToBase64(heroBgUpload.file);
+        images.push({
+          name: heroBgUpload.name,   // e.g. hero_bg.webp
+          b64,
+          alt: "Hero background"
+        });
+
+        // make the site point at the stable background path
+        content.hero = content.hero || {};
+        content.hero.bgImage = `assets/background/${heroBgUpload.name}`;
+      } catch (e) {
+        console.error(e);
+        return alert("Publish failed: couldn't read hero background");
+      }
+    }
 
   for (const it of newOnes) {
     try {

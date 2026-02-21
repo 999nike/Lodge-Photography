@@ -74,7 +74,11 @@ export default async function handler(req, res) {
 
       // lock path to assets/gallery only
       const safeName = name.replace(/[^a-zA-Z0-9._-]/g, "");
-      const imgPath = `assets/gallery/${safeName}`;
+      // Route hero background uploads into /assets/background/
+      const imgPath =
+        safeName.startsWith("hero_bg.")
+          ? `assets/background/${safeName}`
+          : `assets/gallery/${safeName}`;
 
       const imgBlobResp = await fetch(`${api}/repos/${owner}/${repo}/git/blobs`, {
         method: "POST",

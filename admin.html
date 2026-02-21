@@ -17,6 +17,59 @@
 </header>
 
 <section class="section" style="padding-top:120px;">
+  <div class="glass" style="margin-bottom:18px;">
+    <h2>Hero Editor</h2>
+    <p>Edit the homepage hero. Upload a new background if you want. Publish commits everything.</p>
+
+    <div style="display:grid; gap:12px; grid-template-columns: 1fr 1fr;">
+      <div>
+        <div style="font-size:12px; opacity:.75; margin:0 0 6px;">Hero Title</div>
+        <input id="heroTitle" placeholder="Hero title"
+          style="width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.20); color:#fff;">
+      </div>
+
+      <div>
+        <div style="font-size:12px; opacity:.75; margin:0 0 6px;">Hero Subtitle</div>
+        <input id="heroSubtitle" placeholder="Hero subtitle"
+          style="width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.20); color:#fff;">
+      </div>
+
+      <div>
+        <div style="font-size:12px; opacity:.75; margin:0 0 6px;">Primary Button Label</div>
+        <input id="cta1Label" placeholder="View Portfolio"
+          style="width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.20); color:#fff;">
+      </div>
+
+      <div>
+        <div style="font-size:12px; opacity:.75; margin:0 0 6px;">Primary Button Link</div>
+        <input id="cta1Href" placeholder="#work"
+          style="width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.20); color:#fff;">
+      </div>
+
+      <div>
+        <div style="font-size:12px; opacity:.75; margin:0 0 6px;">Secondary Button Label</div>
+        <input id="cta2Label" placeholder="Packages & Pricing"
+          style="width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.20); color:#fff;">
+      </div>
+
+      <div>
+        <div style="font-size:12px; opacity:.75; margin:0 0 6px;">Secondary Button Link</div>
+        <input id="cta2Href" placeholder="#packages"
+          style="width:100%; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.20); color:#fff;">
+      </div>
+    </div>
+
+    <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+      <input id="heroBgFile" type="file" accept="image/*" hidden />
+      <button id="heroBgPick" class="btn-secondary" type="button">Choose Hero Background</button>
+      <div id="heroBgStatus" style="font-size:13px; opacity:.8;">No new hero background selected</div>
+    </div>
+
+    <p style="margin-top:10px; opacity:.75; font-size:13px;">
+      Tip: background will be saved as <b>assets/background/hero_bg.webp</b> (or jpg/png). Publish commits it.
+    </p>
+  </div>
+
   <div class="glass">
     <h2>Gallery Upload</h2>
     <p>Drag photos into the box or click to choose. Click the bin to delete. Click a photo to preview fullscreen.</p>
