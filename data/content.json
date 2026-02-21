@@ -61,24 +61,28 @@
       {
         "src": "assets/gallery/pic20.jpg",
         "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/pic21.jpg",
+        "alt": "Lodge photo"
       }
     ]
   },
   "packages": [
     {
       "name": "Starter",
-      "price": "\u00a3199",
-      "detail": "25 edited photos \u2022 72h turnaround"
+      "price": "£199",
+      "detail": "25 edited photos • 72h turnaround"
     },
     {
       "name": "Pro",
-      "price": "\u00a3349",
-      "detail": "50 edited photos \u2022 48h turnaround"
+      "price": "£349",
+      "detail": "50 edited photos • 48h turnaround"
     },
     {
       "name": "Cinematic",
-      "price": "\u00a3599",
-      "detail": "Photo + drone highlights \u2022 priority delivery"
+      "price": "£599",
+      "detail": "Photo + drone highlights • priority delivery"
     }
   ],
   "contact": {
