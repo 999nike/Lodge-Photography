@@ -431,3 +431,30 @@ body {
   height: auto !important;
   transform: none !important; /* avoid fighting old rules */
 }
+/* PACKAGES ENHANCED */
+.pkg-card { position: relative; }
+.pkg-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  background: rgba(0,0,0,.55);
+  color:#fff;
+  border: 1px solid rgba(255,255,255,.25);
+}
+.pkg-featured{
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: 0 10px 40px rgba(0,0,0,.18);
+  transform: translateY(-2px);
+}
+.pkg-feats{
+  margin: 10px 0 0;
+  padding-left: 18px;
+  opacity: .92;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.pkg-feats li{ margin: 4px 0; }

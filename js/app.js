@@ -68,13 +68,20 @@
     if (pkgs.length) {
       const grid = document.createElement("div");
       grid.className = "pkg-grid";
-      grid.innerHTML = pkgs.map((p) => `
-        <div class="pkg-card">
-          <div class="pkg-name">${p?.name ?? ""}</div>
-          <div class="pkg-price">${p?.price ?? ""}</div>
-          <div class="pkg-detail">${p?.detail ?? ""}</div>
-        </div>
-      `).join("");
+      grid.innerHTML = pkgs.map((p) => {
+          const badge = (p?.badge ?? "").toString().trim();
+          const featured = !!p?.featured;
+          const feats = Array.isArray(p?.features) ? p.features : [];
+
+          return `
+          <div class="pkg-card ${featured ? "pkg-featured" : ""}">
+            ${badge ? `<div class="pkg-badge">${badge}</div>` : ``}
+            <div class="pkg-name">${p?.name ?? ""}</div>
+            <div class="pkg-price">${p?.price ?? ""}</div>
+            <div class="pkg-detail">${p?.detail ?? ""}</div>
+            ${feats.length ? `<ul class="pkg-feats">${feats.map(f => `<li>${f ?? ""}</li>`).join("")}</ul>` : ``}
+          </div>
+        `}).join("");
       pkgWrap.appendChild(grid);
     }
   }
