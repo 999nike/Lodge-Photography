@@ -515,3 +515,77 @@ body {
   border: 1px solid rgba(255,255,255,.25);
   backdrop-filter: blur(8px);
 }
+
+/* ---- ADMIN CONTRAST FIX (auto) ---- */
+body.admin, .admin-page {
+  background: #f0f2f5;
+  color: #111;
+}
+
+/* Make panels/cards visible */
+.admin-page .panel,
+.admin-page .card,
+.admin-page .glass,
+.admin-page .section,
+.admin-page .editor,
+.admin-page .box {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.14);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+/* Stronger input boundaries + readable placeholders */
+.admin-page input,
+.admin-page textarea,
+.admin-page select {
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(0,0,0,0.22);
+  color: #111;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.admin-page input::placeholder,
+.admin-page textarea::placeholder {
+  color: rgba(0,0,0,0.55);
+}
+
+/* Buttons more distinct */
+.admin-page button,
+.admin-page .btn {
+  border: 1px solid rgba(0,0,0,0.22);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.10);
+}
+
+/* Fix “text under controls” (z-index + layout) */
+.admin-page .package-header,
+.admin-page .pkg-head,
+.admin-page .pkg-titlebar {
+  position: relative;
+  z-index: 2;
+}
+.admin-page .package-controls,
+.admin-page .pkg-controls {
+  position: relative;
+  z-index: 3;
+}
+
+/* Reduce accidental overlap inside tiles */
+.admin-page .tile,
+.admin-page .thumb,
+.admin-page .g-tile {
+  position: relative;
+}
+.admin-page .tile-label,
+.admin-page .thumb-label {
+  position: relative;
+  z-index: 2;
+}
+
+/* Slight spacing/align help for icon clusters */
+.admin-page .icon-row,
+.admin-page .controls-row,
+.admin-page .package-controls,
+.admin-page .pkg-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
