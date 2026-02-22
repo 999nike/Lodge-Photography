@@ -70,7 +70,9 @@
 
   const enabledBlocks = blocks.filter(b => b && b.enabled !== false);
 
-  function getByPath(obj, path) {
+  
+  window.__LODGE_DEBUG = { get data(){return data;}, blocks, enabledBlocks };
+function getByPath(obj, path) {
     // supports "gallery.items" / "packages"
     if (!path) return undefined;
     const parts = String(path).split(".");
@@ -203,7 +205,8 @@
 
     const itemsPath = b.itemsRef || (b.source ? `${b.source}.items` : "gallery.items");
     const items = getByPath(data, itemsPath) || [];
-    const first = Array.isArray(items) ? items.slice(0, b.max || 12) : [];
+          console.log("[LODGE][gallery]", {itemsPath, isArray: Array.isArray(items), len: Array.isArray(items)?items.length:null, sample: Array.isArray(items)?items[0]:items});
+const first = Array.isArray(items) ? items.slice(0, b.max || 12) : [];
 
 
     // DEBUG: show what the gallery block thinks it has (remove later)
@@ -264,7 +267,8 @@
 
     const pkgsPath = b.itemsRef || b.source || "packages";
     const pkgs = getByPath(data, pkgsPath) || [];
-    if (Array.isArray(pkgs) && pkgs.length) {
+          console.log("[LODGE][packages]", {pkgsPath, isArray: Array.isArray(pkgs), len: Array.isArray(pkgs)?pkgs.length:null, sample: Array.isArray(pkgs)?pkgs[0]:pkgs});
+if (Array.isArray(pkgs) && pkgs.length) {
       const grid = document.createElement("div");
       grid.className = "pkg-grid";
       grid.innerHTML = pkgs.map((p) => {
