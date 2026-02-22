@@ -252,13 +252,33 @@ $export.addEventListener("click", async () => {
     }
 
   // Build gallery list using RELATIVE repo paths (NO leading slash)
-  const items = draft.items.map((it) => ({
+  // Build gallery list by merging LIVE + DRAFT (prevents accidental drops)
+  const draftItems = draft.items.map((it) => ({
     src: `assets/gallery/${it.name}`,
     alt: it.alt || "Lodge photo"
   }));
 
+  const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
+  const bySrc = new Map();
+
+  // keep existing live items first
+  for (const it of liveItems) {
+    const src = it && it.src;
+    if (!src) continue;
+    bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
+  }
+
+  // then apply draft items (adds new + overrides alt)
+  for (const it of (draftItems || [])) {
+    const src = `assets/gallery/${it.name}`;
+    bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
+  }
+
+  const items = Array.from(bySrc.values());
+
   content.gallery = content.gallery || {};
   content.gallery.items = items;
+
 
 
   // ---- HERO: merge fields from editor into content.json ----
@@ -323,13 +343,33 @@ async function doPublish() {
     }
 
   // Build gallery list using repo paths (relative)
-  const items = (draft.items || []).map((it) => ({
+  // Build gallery list by merging LIVE + DRAFT (prevents accidental drops)
+  const draftItems = (draft.items || []).map((it) => ({
     src: `assets/gallery/${it.name}`,
     alt: it.alt || "Lodge photo"
   }));
 
+  const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
+  const bySrc = new Map();
+
+  // keep existing live items first
+  for (const it of liveItems) {
+    const src = it && it.src;
+    if (!src) continue;
+    bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
+  }
+
+  // then apply draft items (adds new + overrides alt)
+  for (const it of (draftItems || [])) {
+    const src = `assets/gallery/${it.name}`;
+    bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
+  }
+
+  const items = Array.from(bySrc.values());
+
   content.gallery = content.gallery || {};
   content.gallery.items = items;
+
 
 
   // ---- HERO: merge fields from editor into content.json ----
