@@ -6,7 +6,7 @@
   "hero": {
     "title": "Outdoor & Aerial Photography",
     "subtitle": "Professional drone and landscape photography for property and outdoor brands.",
-    "bgImage": "assets/background/hero_bg.jpg",
+    "bgImage": "assets/background/hero_bg.webp",
     "ctaPrimary": {
       "label": "View Portfolio",
       "href": "#work"
@@ -69,30 +69,34 @@
       {
         "src": "assets/gallery/pic21.webp",
         "alt": "Lodge photo"
+      },
+      {
+        "src": "assets/gallery/undefined",
+        "alt": "Lodge photo"
       }
     ]
   },
   "packages": [
     {
       "name": "Starter",
-      "price": "\u00a3199",
-      "detail": "25 edited photos \u2022 72h turnaround",
+      "price": "£199",
+      "detail": "25 edited photos • 72h turnaround",
       "features": [],
       "badge": "",
       "featured": false
     },
     {
       "name": "Pro",
-      "price": "\u00a3349",
-      "detail": "50 edited photos \u2022 48h turnaround",
+      "price": "£349",
+      "detail": "50 edited photos • 48h turnaround",
       "features": [],
       "badge": "",
       "featured": false
     },
     {
       "name": "Cinematic",
-      "price": "\u00a3599",
-      "detail": "Photo + drone highlights \u2022 priority delivery",
+      "price": "£599",
+      "detail": "Photo + drone highlights • priority delivery",
       "features": [],
       "badge": "",
       "featured": false
@@ -125,7 +129,7 @@
       "type": "gallery",
       "enabled": true,
       "title": "Recent Work",
-      "subtitle": "A selection of recent shoots \u2014 tap to view full size.",
+      "subtitle": "A selection of recent shoots — tap to view full size.",
       "max": 12,
       "itemsRef": "gallery.items",
       "anchor": "work"
@@ -135,7 +139,7 @@
       "type": "packages",
       "enabled": true,
       "title": "Packages",
-      "subtitle": "25 edited photos \u2022 72h turnaround \u2022 licensing included",
+      "subtitle": "25 edited photos • 72h turnaround • licensing included",
       "itemsRef": "packages",
       "anchor": "packages"
     }
