@@ -497,3 +497,21 @@ body {
 }
 
 .hero-mini .glass > * { position: relative; z-index: 1; }
+
+
+/* ===============================
+   CACHE PROBE (remove later)
+   =============================== */
+#cacheProbe{
+  position: fixed;
+  left: 14px;
+  top: 120px;
+  z-index: 999999;
+  font-size: 42px;
+  line-height: 1;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(8px);
+}
