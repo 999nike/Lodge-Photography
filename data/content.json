@@ -88,5 +88,43 @@
   "contact": {
     "instagram": "#",
     "email": "hello@lodgestudio.com"
-  }
+  },
+  "blocks": [
+    {
+      "id": "hero-main",
+      "type": "hero",
+      "enabled": true,
+      "title": "Outdoor & Aerial Photography",
+      "subtitle": "Professional drone and landscape photography for property and outdoor brands.",
+      "bgImage": "assets/background/hero_bg.jpg",
+      "stampImage": "assets/brand/lodge-logo.webp",
+      "ctaPrimary": {
+        "label": "View Portfolio",
+        "href": "#work"
+      },
+      "ctaSecondary": {
+        "label": "Packages & Pricing",
+        "href": "#packages"
+      }
+    },
+    {
+      "id": "work-block",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Recent Work",
+      "subtitle": "A selection of recent shoots \u2014 tap to view full size.",
+      "max": 12,
+      "itemsRef": "gallery.items",
+      "anchor": "work"
+    },
+    {
+      "id": "packages-block",
+      "type": "packages",
+      "enabled": true,
+      "title": "Packages",
+      "subtitle": "25 edited photos \u2022 72h turnaround \u2022 licensing included",
+      "itemsRef": "packages",
+      "anchor": "packages"
+    }
+  ]
 }
