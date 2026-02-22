@@ -1,0 +1,8 @@
+
+# local backups
+*.bak
+*.bak_*
+"* = s.replace("
+"* = s2.replace("
+"* = s3.replace("
+"= p.read_text(encoding="utf-8")"
