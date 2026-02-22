@@ -36,10 +36,7 @@
   try {
     const res = await fetch("/data/content.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`content.json fetch failed: ${res.status}`);
-    data = await res.json();
-    data = await res.json();
-
-      if (new URLSearchParams(location.search).get("debug") === "1") {
+    data = await res.json();if (new URLSearchParams(location.search).get("debug") === "1") {
         const g = (data && data.gallery && Array.isArray(data.gallery.items)) ? data.gallery.items.length : "n/a";
         const p = (data && Array.isArray(data.packages)) ? data.packages.length : "n/a";
         console.log("[LODGE DEBUG] content.json loaded", { galleryCount: g, packagesCount: p, blocks: (data.blocks || []).length });
@@ -79,6 +76,33 @@
 
   
   window.__LODGE_DEBUG = { get data(){return data;}, blocks, enabledBlocks };
+
+// safe debug overlay (no-op unless you want it)
+function lodgeDebugOverlay(text) {
+  try {
+    const on = new URLSearchParams(location.search).get("debug") === "1";
+    if (!on) return;
+    let el = document.getElementById("lodgeDebugOverlay");
+    if (!el) {
+      el = document.createElement("pre");
+      el.id = "lodgeDebugOverlay";
+      el.style.position = "fixed";
+      el.style.left = "12px";
+      el.style.top = "84px";
+      el.style.zIndex = "999999";
+      el.style.padding = "10px 12px";
+      el.style.borderRadius = "12px";
+      el.style.background = "rgba(0,0,0,0.70)";
+      el.style.color = "#fff";
+      el.style.fontSize = "12px";
+      el.style.maxWidth = "calc(100vw - 24px)";
+      el.style.whiteSpace = "pre-wrap";
+      document.body.appendChild(el);
+    }
+    el.textContent = String(text || "");
+  } catch {}
+}
+
 function getByPath(obj, path) {
     // supports "gallery.items" / "packages"
     if (!path) return undefined;
@@ -432,3 +456,4 @@ packages=${(data?.packages?.length ?? "n/a")}`);
       }
     }
   }
+})();
