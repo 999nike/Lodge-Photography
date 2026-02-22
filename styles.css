@@ -458,3 +458,42 @@ body {
   line-height: 1.35;
 }
 .pkg-feats li{ margin: 4px 0; }
+
+/* ===============================
+   BLOCKS MODE LAYOUT HELPERS
+   =============================== */
+
+#blocks { padding-top: 72px; } /* accounts for nav look */
+
+.block-section {
+  width: min(980px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.lanes {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .lanes { grid-template-columns: 1fr; }
+}
+
+.hero-mini .glass {
+  min-height: 220px;
+}
+
+.hero-mini-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05);
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.hero-mini .glass > * { position: relative; z-index: 1; }
