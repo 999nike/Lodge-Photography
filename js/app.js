@@ -317,9 +317,9 @@
     });
   }
 
-  if (enabledBlocks.length && blocksRoot && legacy) {
+  if (enabledBlocks.length && blocksRoot) {
     // blocks ON
-    legacy.style.display = "none";
+    if (legacy) legacy.style.display = "none";
     blocksRoot.style.display = "block";
 
     applyBackgroundFromBlocks();
@@ -338,7 +338,7 @@
     setBg(".bg-layer", data?.hero?.bgImage || "assets/background/pic1.jpg");
 
     // PACKAGES legacy
-    const pkgWrap = $("#packages .glass");
+    const pkgWrap = $("#packages");
     if (pkgWrap) {
       clearChildren(pkgWrap, ".pkg-grid");
       const pkgs = Array.isArray(data?.packages) ? data.packages : [];
