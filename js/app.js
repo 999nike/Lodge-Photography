@@ -37,6 +37,13 @@
     const res = await fetch("/data/content.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`content.json fetch failed: ${res.status}`);
     data = await res.json();
+    data = await res.json();
+
+      if (new URLSearchParams(location.search).get("debug") === "1") {
+        const g = (data && data.gallery && Array.isArray(data.gallery.items)) ? data.gallery.items.length : "n/a";
+        const p = (data && Array.isArray(data.packages)) ? data.packages.length : "n/a";
+        console.log("[LODGE DEBUG] content.json loaded", { galleryCount: g, packagesCount: p, blocks: (data.blocks || []).length });
+      }
   } catch (err) {
     console.error("Failed to load /data/content.json", err);
 
@@ -340,13 +347,20 @@ if (Array.isArray(pkgs) && pkgs.length) {
 
   if (enabledBlocks.length && blocksRoot) {
     // blocks ON
+    window.__LODGE_DEBUG.mode = "blocks";
     if (legacy) legacy.style.display = "none";
     blocksRoot.style.display = "block";
 
     applyBackgroundFromBlocks();
     renderBlocks();
+    lodgeDebugOverlay(`mode=${window.__LODGE_DEBUG.mode}
+blocksRoot=${!!blocksRoot} legacy=${!!legacy}
+enabledBlocks=${enabledBlocks.length}
+gallery.items=${(data?.gallery?.items?.length ?? "n/a")}
+packages=${(data?.packages?.length ?? "n/a")}`);
   } else {
     // blocks OFF (legacy behavior)
+    window.__LODGE_DEBUG.mode = "legacy";
     setText(".hero h1", data?.hero?.title || "Outdoor & Aerial Photography");
     setText(".hero p", data?.hero?.subtitle || "Alpine ridges. River valleys. Drone follow shots.");
 
