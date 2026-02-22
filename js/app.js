@@ -184,7 +184,8 @@
     glass.appendChild(h2);
     glass.appendChild(p);
 
-    const items = getByPath(data, b.itemsRef) || [];
+    const itemsPath = b.itemsRef || (b.source ? `${b.source}.items` : "gallery.items");
+    const items = getByPath(data, itemsPath) || [];
     const first = Array.isArray(items) ? items.slice(0, b.max || 12) : [];
 
     if (first.length) {
@@ -236,7 +237,8 @@
     glass.appendChild(h2);
     glass.appendChild(p);
 
-    const pkgs = getByPath(data, b.itemsRef) || [];
+    const pkgsPath = b.itemsRef || b.source || "packages";
+    const pkgs = getByPath(data, pkgsPath) || [];
     if (Array.isArray(pkgs) && pkgs.length) {
       const grid = document.createElement("div");
       grid.className = "pkg-grid";
