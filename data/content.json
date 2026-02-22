@@ -79,11 +79,13 @@
   "packages": [
     {
       "name": "Starter",
-      "price": "£199",
+      "price": "£1-million",
       "detail": "25 edited photos • 72h turnaround",
-      "features": [],
+      "features": [
+        "best quality photos"
+      ],
       "badge": "",
-      "featured": false
+      "featured": true
     },
     {
       "name": "Pro",
