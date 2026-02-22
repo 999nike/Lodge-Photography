@@ -36,7 +36,8 @@
   try {
     const res = await fetch("/data/content.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`content.json fetch failed: ${res.status}`);
-    data = await res.json();if (new URLSearchParams(location.search).get("debug") === "1") {
+    data = await res.json();
+    if (new URLSearchParams(location.search).get("debug") === "1") {
         const g = (data && data.gallery && Array.isArray(data.gallery.items)) ? data.gallery.items.length : "n/a";
         const p = (data && Array.isArray(data.packages)) ? data.packages.length : "n/a";
         console.log("[LODGE DEBUG] content.json loaded", { galleryCount: g, packagesCount: p, blocks: (data.blocks || []).length });
