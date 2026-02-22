@@ -238,7 +238,8 @@ function getByPath(obj, path) {
     const itemsPath = b.itemsRef || (b.source ? `${b.source}.items` : "gallery.items");
     const items = getByPath(data, itemsPath) || [];
           console.log("[LODGE][gallery]", {itemsPath, isArray: Array.isArray(items), len: Array.isArray(items)?items.length:null, sample: Array.isArray(items)?items[0]:items});
-const first = Array.isArray(items) ? items.slice(0, b.max || 12) : [];
+const max = (typeof b.max === 'number') ? b.max : (Array.isArray(items) ? items.length : 0);
+      const first = Array.isArray(items) ? items.slice(0, max) : [];
 
 
     // DEBUG: show what the gallery block thinks it has (remove later)
