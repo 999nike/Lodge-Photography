@@ -589,3 +589,40 @@ body.admin, .admin-page {
   align-items: center;
   gap: 8px;
 }
+
+/* ADMIN PACKAGE HEADER ALIGN HOTFIX */
+/* Force identical header baseline on all package cards (label + controls) */
+.admin-page .pkg-card,
+.admin-page .package-card,
+.admin-page .pkg,
+.admin-page .package {
+  position: relative;
+  padding-top: 52px; /* reserve space for label + controls */
+}
+
+/* Top-left label (Package 1/2/3) */
+.admin-page .pkg-card > h3,
+.admin-page .package-card > h3,
+.admin-page .pkg > h3,
+.admin-page .package > h3 {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  margin: 0;
+  line-height: 1;
+}
+
+/* Top-right controls (up/down/delete) */
+.admin-page .pkg-controls,
+.admin-page .package-controls {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  margin: 0;
+}
+
+/* Keep controls vertically centered & consistent */
+.admin-page .pkg-controls button,
+.admin-page .package-controls button {
+  line-height: 1;
+}
