@@ -128,7 +128,7 @@ function getByPath(obj, path) {
   function renderHeroBlock(b) {
     const section = document.createElement("section");
     section.className = "hero block-section";
-    wrap.id = b.id || "home";
+    section.id = b.id || "home";
 
     const glass = document.createElement("div");
     glass.className = "glass";
