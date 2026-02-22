@@ -188,6 +188,14 @@
     const items = getByPath(data, itemsPath) || [];
     const first = Array.isArray(items) ? items.slice(0, b.max || 12) : [];
 
+
+    // DEBUG: show what the gallery block thinks it has (remove later)
+    const dbg = document.createElement('div');
+    dbg.style.marginTop = '10px';
+    dbg.style.fontSize = '12px';
+    dbg.style.opacity = '0.75';
+    dbg.textContent = `[debug] itemsPath=${itemsPath} items=${Array.isArray(items)?items.length:'not-array'}`;
+    glass.appendChild(dbg);
     if (first.length) {
       const g = document.createElement("div");
       g.className = "gallery-grid";
