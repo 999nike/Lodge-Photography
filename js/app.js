@@ -34,11 +34,28 @@
   // ---------- LOAD JSON ----------
   let data;
   try {
-    const res = await fetch("data/content.json", { cache: "no-store" });
+    const res = await fetch("/data/content.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`content.json fetch failed: ${res.status}`);
     data = await res.json();
   } catch (err) {
     console.error("Failed to load /data/content.json", err);
+
+    // VISIBLE FAIL-BANNER (so we stop guessing)
+    const banner = document.createElement("div");
+    banner.style.position = "fixed";
+    banner.style.left = "12px";
+    banner.style.right = "12px";
+    banner.style.bottom = "12px";
+    banner.style.zIndex = "99999";
+    banner.style.padding = "10px 12px";
+    banner.style.borderRadius = "12px";
+    banner.style.background = "rgba(0,0,0,0.75)";
+    banner.style.color = "#fff";
+    banner.style.fontSize = "12px";
+    banner.style.lineHeight = "1.35";
+    banner.textContent = "[Lodge] content.json load FAILED. Check /data/content.json path + Vercel deploy. " + (err && err.message ? err.message : "");
+    document.body.appendChild(banner);
+
     return;
   }
 
