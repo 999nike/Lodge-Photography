@@ -75,5 +75,51 @@
 
 <script src="js/lightbox.js?v=2e8bfd3"></script>
 <script src="js/app.js?v=2e8bfd3"></script>
+
+<!-- ===============================
+     ERUDA TOGGLE (Dex / Mobile Debug)
+     - Click the bottom-left ⚙️ button
+     - Or enable via ?debug=1
+     =============================== -->
+<script>
+(function () {
+  function loadEruda() {
+    if (window.__ERUDA_LOADING__) return;
+    if (window.eruda) { try { window.eruda.show(); } catch(e){} return; }
+    window.__ERUDA_LOADING__ = true;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/eruda';
+    s.onload = function () {
+      try { window.eruda.init(); window.eruda.show(); } catch(e){}
+    };
+    document.head.appendChild(s);
+  }
+
+  // floating button
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.title = 'Debug Console (Eruda)';
+  btn.setAttribute('aria-label', 'Debug Console (Eruda)');
+  btn.textContent = '⚙️';
+  btn.style.cssText =
+    'position:fixed;left:12px;bottom:12px;z-index:99999;' +
+    'width:44px;height:44px;border-radius:12px;border:0;' +
+    'background:rgba(0,0,0,.55);color:#fff;font-size:20px;' +
+    'box-shadow:0 10px 25px rgba(0,0,0,.35);cursor:pointer;' +
+    'backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);';
+  btn.addEventListener('click', loadEruda);
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.appendChild(btn);
+  });
+
+  // auto-enable via ?debug=1
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get('debug') === '1') loadEruda();
+  } catch(e){}
+})();
+</script>
+<!-- ===== END ERUDA TOGGLE ===== -->
+
 </body>
 </html>
