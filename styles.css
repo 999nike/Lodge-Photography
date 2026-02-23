@@ -686,3 +686,13 @@ body.admin, .admin-page {
     top: auto;
   }
 }
+
+
+/* ===== ADMIN TABS MODE ===== */
+.admin-panel{ display:none; }
+.admin-panel.active{ display:block; }
+
+.admin-link.active{
+  background: rgba(255,255,255,0.40);
+  border-color: rgba(0,0,0,0.18);
+}

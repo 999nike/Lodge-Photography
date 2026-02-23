@@ -34,7 +34,7 @@
 
   <main class="admin-main">
 <section class="section" style="padding-top:120px;">
-  <div class="glass" id="panel-hero" style="margin-bottom:18px;">
+  <div class="glass" admin-panel id="panel-hero" style="margin-bottom:18px;">
     <h2>Hero Editor</h2>
     <p>Edit the homepage hero. Upload a new background if you want. Publish commits everything.</p>
 
@@ -136,7 +136,7 @@
 
   </div>
 
-  <div class="glass" id="panel-gallery">
+  <div class="glass" admin-panel id="panel-gallery">
     <h2>Gallery Upload</h2>
     <p>Drag photos into the box or click to choose. Click the bin to delete. Click a photo to preview fullscreen.</p>
 
@@ -167,7 +167,7 @@
     </p>
   </div>
 
-  <div class="glass" id="panel-packages" style="margin-top:18px;">
+  <div class="glass" admin-panel id="panel-packages" style="margin-top:18px;">
     <h2>Packages Editor</h2>
     <p>Add/remove packages, reorder, and edit features. Publish commits it into <b>data/content.json</b>.</p>
 
@@ -194,5 +194,41 @@
 
 <script src="js/lightbox.js"></script>
 <script src="js/admin.js"></script>
+
+<script>
+/* ADMIN_TABS_MODE */
+(function(){
+  function setActiveFromHash(){
+    const hash = (location.hash || "#panel-hero").trim();
+    const panels = document.querySelectorAll(".admin-panel");
+    let found = false;
+
+    panels.forEach(p => {
+      if ("#" + p.id === hash) { p.classList.add("active"); found = True; }
+      else p.classList.remove("active");
+    });
+
+    if (!found) {
+      const fallback = document.getElementById("panel-hero");
+      if (fallback) fallback.classList.add("active");
+    }
+
+    // keep sidebar highlight
+    document.querySelectorAll(".admin-link").forEach(a => {
+      if ((a.getAttribute("href") || "").trim() === hash) a.classList.add("active");
+      else a.classList.remove("active");
+    });
+
+    // scroll to top of admin content so it feels like a "panel switch"
+    const main = document.querySelector(".admin-main");
+    if (main) main.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  window.addEventListener("hashchange", setActiveFromHash);
+  window.addEventListener("load", setActiveFromHash);
+})();
+</script>
+
 </body>
 </html>
