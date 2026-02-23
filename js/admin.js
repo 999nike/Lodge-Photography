@@ -6,20 +6,25 @@ const PIC_PREFIX = "pic";     // matches your repo naming
 const DEFAULT_START = 10;     // start at pic10.jpg if nothing exists yet
 
 let draft = {
-  items: [] // { name, preview, alt, file? }
-};
+    items: [], // { name, preview, alt, file? }
+    removed: [] // src strings to remove from LIVE on publish/export
+  };
 
 // Load existing draft if present
 try {
   const saved = JSON.parse(localStorage.getItem(LS_KEY) || "null");
   if (saved && Array.isArray(saved.items)) {
-    // restore only what we can safely persist
-    draft.items = (saved.items || [])
-      .filter(it => it && typeof it.name === "string" && it.name.trim())
-      .map(it => {
-        const name = it.name.trim();
-        const preview = (it.preview && String(it.preview)) ? String(it.preview) : (it.src ? String(it.src) : `assets/gallery/${name}`);
-        return { name, preview, alt: it.alt || "Lodge photo" };
+      // restore only what we can safely persist
+      draft.items = (saved.items || [])
+        .filter(it => it && typeof it.name === "string" && it.name.trim())
+        .map(it => {
+          const name = it.name.trim();
+          const preview = (it.preview && String(it.preview)) ? String(it.preview) : `assets/gallery/${name}`;
+          return { name, preview, alt: it.alt || "Lodge photo" };
+        });
+
+      draft.removed = Array.isArray(saved.removed) ? saved.removed.filter(x => typeof x === "string" && x.trim()) : [];
+
       })
       .filter(it => it.preview);
   }
@@ -91,8 +96,17 @@ function render() {
 }
 
 window.removeItem = function (idx) {
-  draft.items.splice(idx, 1);
-  // IMPORTANT: do NOT renumber filenames once files exist in repo.
+    try {
+      const it = draft.items[idx];
+      const name = (it && it.name) ? String(it.name).trim() : "";
+      if (name) {
+        const src = `assets/gallery/${name}`;
+        draft.removed = Array.isArray(draft.removed) ? draft.removed : [];
+        if (!draft.removed.includes(src)) draft.removed.push(src);
+      }
+    } catch {}
+    draft.items.splice(idx, 1);
+// IMPORTANT: do NOT renumber filenames once files exist in repo.
   render();
 };
 
@@ -160,8 +174,9 @@ if ($heroBgPick && $heroBgFile) {
 
 $save.addEventListener("click", () => {
   localStorage.setItem(LS_KEY, JSON.stringify({
-    items: draft.items.map(({ name, preview, alt }) => ({ name, preview, alt }))
-  }));
+      items: draft.items.map(({ name, preview, alt }) => ({ name, preview, alt })),
+      removed: (draft.removed || [])
+    }));
   alert("Draft saved (local). Next: Download content.json.");
 });
 
@@ -170,7 +185,8 @@ $clear.addEventListener("click", () => {
   localStorage.removeItem(LS_KEY);
   draft.items = [];
   render();
-});
+  draft.removed = [];
+    });
 
 async function loadLiveGalleryIfEmpty() {
   // If user already has a draft, keep it
@@ -259,11 +275,14 @@ $export.addEventListener("click", async () => {
   const draftItems = (draft.items || []);
 const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
   const bySrc = new Map();
+  const removed = new Set((draft.removed || []).filter(x => typeof x === 'string'));
+
 
   // keep existing live items first
   for (const it of liveItems) {
     const src = it && it.src;
     if (!src) continue;
+    if (removed.has(src)) continue;
     bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
   }
 
@@ -348,11 +367,14 @@ async function doPublish() {
   const draftItems = (draft.items || []);
 const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
   const bySrc = new Map();
+  const removed = new Set((draft.removed || []).filter(x => typeof x === 'string'));
+
 
   // keep existing live items first
   for (const it of liveItems) {
     const src = it && it.src;
     if (!src) continue;
+    if (removed.has(src)) continue;
     bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
   }
 
