@@ -253,12 +253,8 @@ $export.addEventListener("click", async () => {
 
   // Build gallery list using RELATIVE repo paths (NO leading slash)
   // Build gallery list by merging LIVE + DRAFT (prevents accidental drops)
-  const draftItems = draft.items.map((it) => ({
-    src: `assets/gallery/${it.name}`,
-    alt: it.alt || "Lodge photo"
-  }));
-
-  const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
+  const draftItems = (draft.items || []);
+const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
   const bySrc = new Map();
 
   // keep existing live items first
@@ -270,7 +266,9 @@ $export.addEventListener("click", async () => {
 
   // then apply draft items (adds new + overrides alt)
   for (const it of (draftItems || [])) {
-    const src = `assets/gallery/${it.name}`;
+    const name = (it && typeof it.name === "string") ? it.name.trim() : "";
+    if (!name) continue;
+    const src = `assets/gallery/${name}`;
     bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
   }
 
@@ -344,12 +342,8 @@ async function doPublish() {
 
   // Build gallery list using repo paths (relative)
   // Build gallery list by merging LIVE + DRAFT (prevents accidental drops)
-  const draftItems = (draft.items || []).map((it) => ({
-    src: `assets/gallery/${it.name}`,
-    alt: it.alt || "Lodge photo"
-  }));
-
-  const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
+  const draftItems = (draft.items || []);
+const liveItems = (content.gallery && Array.isArray(content.gallery.items)) ? content.gallery.items : [];
   const bySrc = new Map();
 
   // keep existing live items first
@@ -361,7 +355,9 @@ async function doPublish() {
 
   // then apply draft items (adds new + overrides alt)
   for (const it of (draftItems || [])) {
-    const src = `assets/gallery/${it.name}`;
+    const name = (it && typeof it.name === "string") ? it.name.trim() : "";
+    if (!name) continue;
+    const src = `assets/gallery/${name}`;
     bySrc.set(src, { src, alt: (it.alt || "Lodge photo") });
   }
 
