@@ -14,11 +14,14 @@ try {
   const saved = JSON.parse(localStorage.getItem(LS_KEY) || "null");
   if (saved && Array.isArray(saved.items)) {
     // restore only what we can safely persist
-    draft.items = saved.items.map(it => ({
-      name: it.name,
-      preview: it.preview || (it.src ? it.src : ""),
-      alt: it.alt || "Lodge photo"
-    })).filter(it => it.name && it.preview);
+    draft.items = (saved.items || [])
+      .filter(it => it && typeof it.name === "string" && it.name.trim())
+      .map(it => {
+        const name = it.name.trim();
+        const preview = (it.preview && String(it.preview)) ? String(it.preview) : (it.src ? String(it.src) : `assets/gallery/${name}`);
+        return { name, preview, alt: it.alt || "Lodge photo" };
+      })
+      .filter(it => it.preview);
   }
 } catch {}
 
