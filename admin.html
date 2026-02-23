@@ -16,8 +16,25 @@
   <div class="nav-right"></div>
 </header>
 
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="admin-side-head">
+      <div class="admin-side-title">LODGE Admin</div>
+      <div class="admin-side-sub">Quick jump</div>
+    </div>
+
+    <a class="admin-link" href="#panel-hero">Hero</a>
+    <a class="admin-link" href="#panel-gallery">Gallery</a>
+    <a class="admin-link" href="#panel-packages">Packages</a>
+
+    <div class="admin-side-foot">
+      <div class="admin-side-tip">Tip: use <b>Save Draft</b> while testing. <b>Publish</b> writes to GitHub.</div>
+    </div>
+  </aside>
+
+  <main class="admin-main">
 <section class="section" style="padding-top:120px;">
-  <div class="glass" style="margin-bottom:18px;">
+  <div class="glass" id="panel-hero" style="margin-bottom:18px;">
     <h2>Hero Editor</h2>
     <p>Edit the homepage hero. Upload a new background if you want. Publish commits everything.</p>
 
@@ -119,7 +136,7 @@
 
   </div>
 
-  <div class="glass">
+  <div class="glass" id="panel-gallery">
     <h2>Gallery Upload</h2>
     <p>Drag photos into the box or click to choose. Click the bin to delete. Click a photo to preview fullscreen.</p>
 
@@ -150,7 +167,7 @@
     </p>
   </div>
 
-  <div class="glass" style="margin-top:18px;">
+  <div class="glass" id="panel-packages" style="margin-top:18px;">
     <h2>Packages Editor</h2>
     <p>Add/remove packages, reorder, and edit features. Publish commits it into <b>data/content.json</b>.</p>
 
@@ -172,6 +189,8 @@
   </div>
 
 </section>
+  </main>
+</div>
 
 <script src="js/lightbox.js"></script>
 <script src="js/admin.js"></script>

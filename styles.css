@@ -626,3 +626,63 @@ body.admin, .admin-page {
 .admin-page .package-controls button {
   line-height: 1;
 }
+
+
+/* ===== ADMIN SIDEBAR LAYOUT (CMS-ish) ===== */
+.admin-shell{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 18px 60px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+}
+
+.admin-sidebar{
+  position: sticky;
+  top: 96px; /* below fixed nav */
+  height: fit-content;
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.admin-side-head{ margin-bottom: 12px; }
+.admin-side-title{ font-weight: 900; letter-spacing: .04em; }
+.admin-side-sub{ font-size: 12px; opacity: .75; margin-top: 2px; }
+
+.admin-link{
+  display: block;
+  padding: 10px 12px;
+  border-radius: 14px;
+  margin: 6px 0;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.22);
+}
+.admin-link:hover{ background: rgba(255,255,255,0.35); }
+
+.admin-side-foot{ margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.10); }
+.admin-side-tip{ font-size: 12px; opacity: .8; line-height: 1.35; }
+
+.admin-main{ min-width: 0; }
+
+.admin-page .section{
+  max-width: 100%;
+  padding-top: 0 !important; /* admin-shell handles this */
+}
+
+@media (max-width: 980px){
+  .admin-shell{
+    grid-template-columns: 1fr;
+    padding-top: 110px;
+  }
+  .admin-sidebar{
+    position: relative;
+    top: auto;
+  }
+}
